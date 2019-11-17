@@ -676,3 +676,57 @@ constructor(props) {
     });
   }
 ```
+
+### Select specific array in state
+
+```
+handleChange: function (e) {
+    // 1. Make a shallow copy of the items
+    let items = [...this.state.items];
+    // 2. Make a shallow copy of the item you want to mutate
+    let item = {...items[1]};
+    // 3. Replace the property you're intested in
+    item.name = 'newName';
+    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+    items[1] = item;
+    // 5. Set the state to our new copy
+    this.setState({items});
+},
+```
+wrapup
+```
+this.setState(({items}) => ({
+    items: [
+        ...items.slice(0,1),
+        {
+            ...items[1],
+            name: 'newName',
+        },
+        ...items.slice(2)
+    ]
+}));
+```
+
+```
+❯ node
+> items = [{name:'foo'},{name:'bar'},{name:'baz'}]
+[ { name: 'foo' }, { name: 'bar' }, { name: 'baz' } ]
+> clone = [...items]
+[ { name: 'foo' }, { name: 'bar' }, { name: 'baz' } ]
+> item1 = {...clone[1]}
+{ name: 'bar' }
+> item1.name = 'bacon'
+'bacon'
+> clone[1] = item1
+{ name: 'bacon' }
+> clone
+[ { name: 'foo' }, { name: 'bacon' }, { name: 'baz' } ]
+> items
+[ { name: 'foo' }, { name: 'bar' }, { name: 'baz' } ] // good! we didn't mutate `items`
+> items === clone
+false // these are different objects
+> items[0] === clone[0]
+true // we don't need to clone items 0 and 2 because we're not mutating them (efficiency gains!)
+> items[1] === clone[1]
+false // this guy we copied
+```
