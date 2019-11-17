@@ -132,6 +132,11 @@ for(let valueInArray of todo){
     const todoTextAndFilter = todo.filter(todo => todo.isComplete === true;).map(todo => todo.text;)
     //filted array whth complete true than group them with array only text
 
+## Function
+### Arrow function
+    let foo = () => { <code> };
+    (() => )  //auto return when you have single line of code
+
 ## Math Random
 ```
 // This random number function that will creates color codes for the randomColor variable
